@@ -61,6 +61,7 @@ var HTTPClient = http.DefaultClient
 
 // jsonContentType is JSON content type.
 const jsonContentType = "application/json"
+const utf8Charset = "charset=utf-8"
 
 func newRequest(method string, url string, data []byte) (*http.Request, error) {
 	request, err := http.NewRequest(method, url, bytes.NewBuffer(data))
@@ -68,7 +69,9 @@ func newRequest(method string, url string, data []byte) (*http.Request, error) {
 		return nil, err
 	}
 	request.Header.Add("Accept", jsonContentType)
-
+	if data != nil {
+		request.Header.Add("Content-Type", strings.Join([]string{jsonContentType, utf8Charset}, "; "))
+	}
 	return request, nil
 }
 
